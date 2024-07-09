@@ -81,7 +81,6 @@ model:
 
   data:
     test_ds:
-      manifest_filepath: ??? # Path to a list of JSONL files corresponding to the source data. Data format is identical to train_ds.
       names: null # Names of the corresponding datasets used to log metrics.
       global_batch_size: 1
       micro_batch_size: 1
@@ -107,6 +106,7 @@ model:
       log_every_n_steps: 1
       sample_rate: ${data.train_ds.sample_rate} # don't change, let hydra resolve from saved config
       audio_locator: null # set it to allow multiple audios in a sample, e.g. '|audio|', and use it in the context field of manifest to specify the locations of audios (`audio_filepath` is a list of audios).
+      manifest_filepath: null
 
       metric:
         name: "bleu" # Name of the evaluation metric to use. Options: ['exact_string_match', 'loss', 'wer', 'bleu', 'rouge']
