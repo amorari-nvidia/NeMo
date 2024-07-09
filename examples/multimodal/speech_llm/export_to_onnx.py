@@ -91,7 +91,7 @@ def main(cfg) -> None:
     # Define example input for the model (this is needed for tracing)
     #example_input = torch.randn(1, 64, 128).to(model.device)  # Change this according to your model's input shape
 
-    model_to_export = model.perception
+    model_to_export = model.perception.encoder
     model_name = model_to_export.__class__.__name__
     file_path=f"{cfg.model.export_to_path}_{model_name}.onnx"
     
