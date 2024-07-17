@@ -1,6 +1,6 @@
  **Salm model export to ONNX**
 
-The purpose of this repo is to export the Salm model (NeMo/examples/multimodal/speech_llm) to ONNX. Currently, the code exports the Encoder and the Modality adapter components.
+The purpose of this branch is to export the Salm model (NeMo/examples/multimodal/speech_llm) to ONNX. Currently, the code exports the Encoder and the Modality adapter components.
 
  **Instructions**
 
