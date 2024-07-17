@@ -25,8 +25,8 @@ docker run --gpus all -it -v .:/workspace  --shm-size=8g \
 Reinstall NeMo:
 
 ```shell
-cd NeMo
 pip uninstall nemo_toolkit
+cd NeMo
 ./reinstall.sh
 ```
 
