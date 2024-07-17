@@ -34,7 +34,7 @@ cd NeMo
 
 Download NeMo model checkpoint in the speech_llm folder:
 ```shell
-cd NeMo/examples/multimodal/speech_llm
+cd examples/multimodal/speech_llm
 wget --content-disposition 'https://api.ngc.nvidia.com/v2/models/org/nvidia/team/nemo/speechllm_fc_llama2_7b/1.23.1/files?redirect=true&path=speechllm_fc_llama2_7b.nemo' -O speechllm_fc_llama2_7b.nemo
 ```
 
