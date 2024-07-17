@@ -22,15 +22,13 @@ docker run --gpus all -it -v .:/workspace  --shm-size=8g \
   stack=67108864 --device=/dev/snd  --name salm-export-nvcr-nemo-24-05 nvcr.io/nvidia/nemo:24.05
 ```
 
-
-Install NeMo repo:
+Reinstall NeMo:
 
 ```shell
 cd NeMo
+pip uninstall nemo_toolkit
 ./reinstall.sh
 ```
-
-
 
 Download NeMo model checkpoint in the speech_llm folder:
 ```shell
