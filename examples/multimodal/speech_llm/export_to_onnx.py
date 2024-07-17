@@ -12,6 +12,8 @@ from nemo.collections.multimodal.speech_llm.models.modular_models import Modular
 from nemo.collections.nlp.parts.megatron_trainer_builder import MegatronTrainerBuilder
 from nemo.core.config import hydra_runner
 from nemo.utils import logging
+import json
+import os
 
 mp.set_start_method("spawn", force=True)
 
@@ -88,24 +90,43 @@ def main(cfg) -> None:
 
     model.eval()
 
-    # Define example input for the model (this is needed for tracing)
-    #example_input = torch.randn(1, 64, 128).to(model.device)  # Change this according to your model's input shape
+    #Export the models
 
-    model_to_export = model.perception.encoder
-    model_name = model_to_export.__class__.__name__
-    file_path=f"{cfg.model.export_to_path}_{model_name}.onnx"
-    
-    # Export the perception model
-    input_example = model_to_export.input_example(max_batch = 8, max_dim = 32000) 
+    models_to_export = {
+        'modality_adapter' : model.perception.modality_adapter,
+        'audio_encoder' : model.perception.encoder,
+    }
 
-    logging.info(f"\n\nExporting to {file_path}")
-    model_to_export.export(
-        output=file_path,
-        input_example=input_example,
-        verbose=False,
-        onnx_opset_version=17,
-        dynamic_axes={}
-    )
+    engine_path = f"onnx/"
+    for tag, model_to_export in models_to_export.items():
+        model_name = model_to_export.__class__.__name__ 
+        model_path = f"{engine_path}/{cfg.model.export_to_path}_{model_name}_{tag}"
+
+        logging.info("################################################################################")
+        logging.info(f"Exporting to {model_path}...")
+
+        os.makedirs(model_path, exist_ok=True)
+        model_file_path= f"{model_path}/model.onnx"
+        
+        #NOTE: Export fails with max_dim>4096 probably due to memory alloc error
+        input_example = model_to_export.input_example(max_batch = 8, max_dim = 4096) 
+
+        model_to_export.export(
+            output=model_file_path,
+            input_example=input_example,
+            verbose=False,
+            onnx_opset_version=17,
+            dynamic_axes={},
+        )
+
+        # Save the config to a json file
+        config_file_path= f"{model_path}/config.json"
+        config_dict = OmegaConf.to_container(cfg.model, resolve=False)
+        json_config = json.dumps(config_dict, indent=4)
+
+        with open(config_file_path, "w") as json_file:
+            json_file.write(json_config)
+
 
 if __name__ == "__main__":
     main()
