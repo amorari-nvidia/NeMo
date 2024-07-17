@@ -43,4 +43,4 @@ Execute the export script in the container:
  ./export_to_onnx.sh
 ```
 
-The two ONNX model should be in the folder NeMo/examples/multimodal/speech_llm/onnx.
+Two ONNX models should have been created in NeMo/examples/multimodal/speech_llm/onnx.
